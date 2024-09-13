@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -33,5 +34,7 @@ def make_webhook_response(text):
     })
 
 if __name__ == '__main__':
+    # Pegar a porta da variável de ambiente ou usar 5000 como padrão
+    port = int(os.environ.get('PORT', 5000))
     # Iniciar o servidor Flask
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=port)
