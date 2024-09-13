@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def home():
+    return "OK", 200
+
 # Rota para lidar com as requisições do webhook
 @app.route('/webhook', methods=['POST'])
 def webhook():
