@@ -3,16 +3,30 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
+# Rota para lidar com as requisições do webhook
 @app.route('/', methods=['GET'])
 def home():
     return "OK", 200
 
-# Rota para lidar com as requisições do webhook
 @app.route('/webhook', methods=['POST'])
 def webhook():
     req = request.get_json(silent=True, force=True)
     
-    # Processar a intent recebida
+    # Verifica se é uma callback_query do Telegram
+    if 'callback_query' in req:
+        callback_data = req['callback_query']['data']
+        
+        # Processa o callback_data
+        if callback_data == 'opcao_1':
+            response_text = "Você escolheu a Opção 1."
+        elif callback_data == 'opcao_2':
+            response_text = "Você escolheu a Opção 2."
+        else:
+            response_text = "Desculpe, não entendi sua escolha."
+        
+        return make_webhook_response(response_text)
+    
+    # Processar intents do Dialogflow
     intent_name = req.get('queryResult').get('intent').get('displayName')
     
     # Tratamento baseado no nome da intent
