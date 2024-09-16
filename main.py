@@ -24,6 +24,11 @@ def dialogflow():
     response = format_response(['Hi, how can I help you today?'])
   elif action == 'input.welcome':
     response = format_response(['testando resposta','apareceu aii?'])
+  elif action == 'teste.action':
+    if data['queryResult']['callback_data'] == 'opcao_1':
+        response = format_response(['opcao 1 selecionada'])
+    else:
+        response = format_response(['opcao 2 selecionada'])
   elif action == 'inputUnknown':
     response = format_response(['Sorry, I did not understand that clearly.'])
   else:
