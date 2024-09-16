@@ -19,6 +19,11 @@ def dialogflow():
     data = request.get_json()
 
     action = data['queryResult']['action']
+    parameters = data['queryResult'].get('parameters', {})
+    callback_data = parameters.get('callback_data')
+
+    print(f"action: {action}")
+    print(f"callback: {callback_data}")
 
     # Tratar diferentes ações baseadas na intent detectada
     if action == 'defaultWelcomeIntent':
