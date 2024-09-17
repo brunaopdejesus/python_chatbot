@@ -20,13 +20,16 @@ def format_response(texts: List[str]) -> jsonify:
 def dialogflow():
     data = request.get_json()
 
-    action = data['queryResult']['action']
+    # Verificar a estrutura recebida
+    logger.info(f"Recebido JSON: {data}")
+
+    action = data['queryResult'].get('action', 'Unknown Action')
     parameters = data['queryResult'].get('parameters', {})
     callback_data = parameters.get('callback_data')
 
     # Usando logs ao invés de print
     logger.info(f"action: {action}")
-    logger.info(f"callback: {callback_data}")
+    logger.info(f"callback_data: {callback_data}")
 
     # Tratar diferentes ações baseadas na intent detectada
     if action == 'defaultWelcomeIntent':
@@ -36,16 +39,13 @@ def dialogflow():
         response = format_response(['testando resposta', 'apareceu aii?'])
 
     elif action == 'teste.action':
-        # Aqui é onde você trataria o callback_data
-        # Verificar os parâmetros passados na intent
-        parameters = data['queryResult'].get('parameters', {})
-        callback_data = parameters.get('callback_data')
-
+        # Tratar o callback_data com mais cuidado, para lidar com None
         if callback_data == 'opcao_1':
             response = format_response(['opção 1 selecionada'])
         elif callback_data == 'opcao_2':
             response = format_response(['opção 2 selecionada'])
         else:
+            logger.warning(f'callback_data não reconhecido: {callback_data}')
             response = format_response(['Nenhuma opção válida foi selecionada.'])
 
     elif action == 'inputUnknown':
