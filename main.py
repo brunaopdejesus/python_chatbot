@@ -53,6 +53,9 @@ def dialogflow():
     elif action == 'inputUnknown':
         response = format_response(['Sorry, I did not understand that clearly.'])
 
+    elif action == 'contato':
+        response = format_response(['CONTATOOOO'])
+
     else:
         response = format_response([f'No handler for the action name {action}.'])
 
