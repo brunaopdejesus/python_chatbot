@@ -25,18 +25,9 @@ def dialogflow():
 
     action = data['queryResult'].get('action', 'Unknown Action')
     parameters = data['queryResult'].get('parameters', {})
-    callback_data = None
     
-    # Procurar callback_data dentro de fulfillmentMessages
-    fulfillment_messages = data['queryResult'].get('fulfillmentMessages', [])
-    for message in fulfillment_messages:
-        payload = message.get('payload', {})
-        telegram_data = payload.get('telegram', {})
-        reply_markup = telegram_data.get('reply_markup', {})
-        inline_keyboard = reply_markup.get('inline_keyboard', [])
-        if inline_keyboard:
-            callback_data = inline_keyboard[0][0].get('callback_data')
-            break
+    # Extrair callback_data corretamente da requisição do Telegram
+    callback_data = data['originalDetectIntentRequest']['payload']['data']['callback_query'].get('data')
 
     # Usando logs ao invés de print
     logger.info(f"action: {action}")
